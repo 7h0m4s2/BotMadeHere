@@ -21,6 +21,7 @@ The file must be named `config.json` and included in the same directory as the i
     "db_pass": "",
     "db_name": "",
     "db_host": "",
+    "rules_channel": "server-rules",
     "cooldownTime": 2,
     "token": ""
 }

@@ -1,6 +1,6 @@
 import {Client} from 'discord.js';
 import BotCommand from './Commands/BotCommand';
-import { HelpCommand, NotifyYoutube } from './Commands/Commands';
+import { HelpCommand, NotifyYoutube, RulesCommand } from './Commands/Commands';
 import DBManager from './DBManager';
 import GrizzlyListerner from './Listeners/GrizzlyListeners';
 
@@ -41,6 +41,7 @@ class BotManager {
 
     initCommands() {
         this.commands.push(new HelpCommand());
+        this.commands.push(new RulesCommand());
         this.commands.push(new NotifyYoutube());
 
         for (const command of this.commands) {
