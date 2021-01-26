@@ -15,6 +15,12 @@ export class User {
     @Column()
     bot: boolean;
 
+    @Column()
+    enableYoutube: boolean;
+
+    @Column()
+    enablePatreon: boolean;
+
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
     added: string;
 

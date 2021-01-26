@@ -1,8 +1,6 @@
 import { Message, User } from "discord.js";
 import BotManager from "../BotManager";
 import BotCommand from "./BotCommand";
-import { Notifiers, UserNotify } from '../entity/UserNotify';
-import { throws } from "assert";
 
 const ytnotifier = require('youtube-notifier');
 
@@ -25,21 +23,11 @@ class NotifyYoutube extends BotCommand {
     }
 
     async toggleNotifyUser() {
-        const setUser = await BotManager.database.connection.getRepository(UserNotify).findOne({ user: this.user});
 
-        if(setUser === undefined) {
-            const userNotify = new UserNotify(this.user, Notifiers.YOUTUBE);
-            BotManager.database.connection.manager.save(userNotify);
-            this.sendAllUsersNotification();
+        this.user.enableYoutube = !this.user.enableYoutube;
 
-            return true;
-        } else {
-            BotManager.database.connection.getRepository(UserNotify).remove(setUser);
-            this.sendAllUsersNotification();
-
-            return false;
-        }
-
+        BotManager.database.connection.manager.save(this.user);
+        return this.user.enableYoutube;
     }
 
     initYoutubeChecker() {
@@ -49,14 +37,18 @@ class NotifyYoutube extends BotCommand {
         });
 
         Notifier.on('video', video => {
-            this.sendAllUsersNotification();
+            this.sendAllUsersNotification(video);
             console.log(video);
         });
     }
 
-    async sendAllUsersNotification() {
-        const users = await BotManager.database.connection.manager.find(UserNotify, {role: Notifiers.YOUTUBE});
-        console.log(users);
+    async sendAllUsersNotification(video: any) {
+        const Users = await BotManager.database.getUsersYoutube();
+        
+        for (const user of Users) {
+            const discordUser = BotManager.client.users.fetch(user.userId);
+            (await discordUser).send('SMH has uploaded a new video, check it out now! ' + video.link)
+        }
     }
 
     getHelpMessageContent() {

@@ -2,7 +2,6 @@ import BotManager from "./BotManager";
 import {createConnection, Connection, getConnection, getRepository} from "typeorm";
 
 import {User} from "./entity/User";
-import { UserNotify } from "./entity/UserNotify";
 
 class DBManager {
 
@@ -21,15 +20,17 @@ class DBManager {
             password: BotManager.config.db_pass,
             database: BotManager.config.db_name,
             entities: [
-                User,
-                UserNotify
+                User
             ],
-            synchronize: true,
         });
     }
 
     async getUser(userId) {
         return await this.connection.getRepository(User).findOne({userId: userId});
+    }
+
+    async getUsersYoutube() {
+        return await this.connection.getRepository(User).find({enableYoutube: true});
     }
 }
 
