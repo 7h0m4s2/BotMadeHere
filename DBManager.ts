@@ -22,6 +22,7 @@ class DBManager {
             entities: [
                 User
             ],
+            synchronize: true,
         });
     }
 

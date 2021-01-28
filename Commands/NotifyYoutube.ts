@@ -47,7 +47,7 @@ class NotifyYoutube extends BotCommand {
         
         for (const user of Users) {
             const discordUser = BotManager.client.users.fetch(user.userId);
-            (await discordUser).send('SMH has uploaded a new video, check it out now! ' + video.link)
+            (await discordUser).send('SMH has uploaded a new video, check it out now! ' + video.url)
         }
     }
 
