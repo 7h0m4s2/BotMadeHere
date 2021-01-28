@@ -15,10 +15,10 @@ export class User {
     @Column()
     bot: boolean;
 
-    @Column()
+    @Column('boolean', {default: false})
     enableYoutube: boolean;
 
-    @Column()
+    @Column('boolean', {default: false})
     enablePatreon: boolean;
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
@@ -31,6 +31,8 @@ export class User {
         this.userId = id;
         this.username = username;
         this.bot = bot;
+        this.enablePatreon = false;
+        this.enableYoutube = false;
     }
 
 }

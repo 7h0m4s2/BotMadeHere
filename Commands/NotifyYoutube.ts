@@ -32,7 +32,7 @@ class NotifyYoutube extends BotCommand {
 
     initYoutubeChecker() {
         const Notifier = new ytnotifier({
-            channels: ['UCDmnvYfcAz3lvZfSQommNEQ'],
+            channels: ['UCj1VqrHhDte54oLgPG4xpuQ'],
             checkInterval: 50
         });
 
