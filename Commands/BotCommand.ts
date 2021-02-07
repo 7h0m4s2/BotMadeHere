@@ -43,7 +43,14 @@ class BotCommand {
     }
 
     validateCooldown(user: User) {
+
         const lastSendDate = new Date(user.lastSend);
+        const addedDate = new Date(user.added);
+
+        if(lastSendDate.getTime() === addedDate.getTime()) {
+            return true;
+        }
+
         const currentDate = new Date();
 
         const timeDiff = Math.abs(currentDate.getTime() - lastSendDate.getTime()) / 1000;
