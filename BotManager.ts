@@ -5,6 +5,7 @@ import { HelpCommand, NotifyYoutube, RulesCommand, QuestionCommand, ExportQuesti
 import DBManager from './DBManager';
 import { QuestionSession } from './entity/QuestionSession';
 import GrizzlyListerner from './Listeners/GrizzlyListeners';
+import PollVoteListerner from './Listeners/PollVoteListerner';
 
 const config = require('./config.json');
 var fs = require("fs");
@@ -23,7 +24,7 @@ class BotManager {
         this.readConfig();
         this.database = await new DBManager().createConnection();
 
-        const client = new Client();
+        const client = new Client({ partials: ['MESSAGE', 'CHANNEL', 'REACTION'] });
         client.login(this.config.token);
         this.client = client;
 
@@ -62,6 +63,8 @@ class BotManager {
 
     initListeners() {
        new GrizzlyListerner();
+       new PollVoteListerner();
+
     }
 
     initProfanity() {

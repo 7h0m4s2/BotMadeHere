@@ -4,6 +4,7 @@ import {createConnection, Connection, getConnection, getRepository} from "typeor
 import {User} from "./entity/User";
 import { Question } from "./entity/Question";
 import { QuestionSession } from "./entity/QuestionSession";
+import { QuestionPollMessage } from "./entity/QuestionPollMessage";
 
 class DBManager {
 
@@ -20,7 +21,8 @@ class DBManager {
             entities: [
                 User,
                 Question,
-                QuestionSession
+                QuestionSession,
+                QuestionPollMessage
             ],
             synchronize: true,
         });

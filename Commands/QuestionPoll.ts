@@ -1,7 +1,9 @@
 import { Message } from "discord.js";
+import { send } from "process";
 import BotManager from "../BotManager";
 import DBManager from "../DBManager";
 import { Question } from "../entity/Question";
+import { QuestionPollMessage } from "../entity/QuestionPollMessage";
 import { QuestionSession } from "../entity/QuestionSession";
 import { User } from "../entity/User";
 import BotCommand from "./BotCommand";
@@ -85,8 +87,24 @@ class QuestionPoll extends BotCommand {
 
             for (const question of questions) {
                 msg.channel.send(`${question.user.username} - ${question.content}`)
-                    .then(sendMsg => {
+                    .then(async sendMsg => {
                         sendMsg.react("⬆️");
+
+                        const dbMessage = await BotManager.database.connection
+                            .getRepository(QuestionPollMessage)
+                            .createQueryBuilder("pollMessage")
+                            .where("pollMessage.question = :id", { id: question.id})
+                            .getOne();
+
+                        if(dbMessage) {
+                            dbMessage.messageId = sendMsg.id;
+                            BotManager.database.connection.manager.save(dbMessage);
+                         } else {
+                            const pollMessage = new QuestionPollMessage();
+                            pollMessage.messageId = sendMsg.id;
+                            pollMessage.question = question;
+                            BotManager.database.connection.manager.save(pollMessage);
+                         }
                     });
             }
 
