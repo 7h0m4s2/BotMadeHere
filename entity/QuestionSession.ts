@@ -19,6 +19,9 @@ export class QuestionSession {
     @Column('boolean', {default: false})
     active: boolean;
 
+    @Column('boolean', {default: false})
+    pollactive: boolean;
+
     @OneToMany(() => Question, question => question.questionsession)
     questions: Question[];
 }

@@ -26,6 +26,9 @@ export class Question {
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
     added: string;
 
+    @Column('boolean', {default: true})
+    inpoll: boolean;
+
     @ManyToOne(() => User, user => user.questions)
     user: User;
 

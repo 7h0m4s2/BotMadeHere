@@ -1,3 +1,4 @@
+import { sign } from "crypto";
 import { Message } from "discord.js";
 import BotManager from "../BotManager";
 import DBManager from "../DBManager";
@@ -14,6 +15,15 @@ class QuestionCommand extends BotCommand {
         if(this.validateChannel(msg) && this.validateArgs(msg) && this.validateProfanity(msg) && this.validateUserRole(msg)) { 
             const session = await BotManager.getLatestActiveQuestionSession();
             if(session) {
+
+                if(session.pollactive) {
+                    if(msg.deletable) {
+                        msg.delete();
+                    }
+                    msg.author.send(`Your question \`${this.args.join(" ")}\` has been deleted from the channel because a poll is currently active. You can submit the question in the next session`);
+                    return;
+                }
+
                 const question = new Question();
                 question.content = this.args.join(" ");
                 question.user = this.user;

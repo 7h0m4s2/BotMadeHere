@@ -1,7 +1,7 @@
 import {Client} from 'discord.js';
 import AMASession from './Commands/AMASession';
 import BotCommand from './Commands/BotCommand';
-import { HelpCommand, NotifyYoutube, RulesCommand, QuestionCommand, ExportQuestions } from './Commands/Commands';
+import { HelpCommand, NotifyYoutube, RulesCommand, QuestionCommand, ExportQuestions, QuestionPoll } from './Commands/Commands';
 import DBManager from './DBManager';
 import { QuestionSession } from './entity/QuestionSession';
 import GrizzlyListerner from './Listeners/GrizzlyListeners';
@@ -53,6 +53,7 @@ class BotManager {
         this.commands.push(new QuestionCommand());
         this.commands.push(new AMASession());
         this.commands.push(new ExportQuestions());
+        this.commands.push(new QuestionPoll());
 
         for (const command of this.commands) {
             command.init();
