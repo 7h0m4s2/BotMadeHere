@@ -18,7 +18,7 @@ class BotCommand {
 
     init() {
         BotManager.client.on('message', async (msg) => { 
-            if (msg.content === this.getPrefix() + this.command) {
+            if (this.validateCommand(msg)) {
                 this.user = await this.getUser(msg);
 
                 if(this.validateCooldown(this.user)) {
@@ -28,6 +28,10 @@ class BotCommand {
                 }
             }
         })
+    }
+
+    validateCommand(msg: Message) {
+        return msg.content === this.getPrefix() + this.command;
     }
 
     async getUser(msg: Message) {
@@ -66,7 +70,7 @@ class BotCommand {
         return this.getPrefix() + this.command + ' - ' + this.getHelpMessageContent() + '\n';
     } 
 
-    getHelpMessageContent() : string {
+    getHelpMessageContent() : string | boolean {
         throw new Error('Help message for '+ this.command +' not implemented');
     }
 }

@@ -1,4 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from "typeorm";
+import { Question } from "./Question";
 
 @Entity()
 export class User {
@@ -26,6 +27,9 @@ export class User {
 
     @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP"})
     lastSend: string;
+
+    @OneToMany(() => Question, question => question.user)
+    questions: Question[];
 
     constructor(id: string, username: string, bot: boolean) {
         this.userId = id;

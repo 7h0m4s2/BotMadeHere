@@ -2,14 +2,12 @@ import BotManager from "./BotManager";
 import {createConnection, Connection, getConnection, getRepository} from "typeorm";
 
 import {User} from "./entity/User";
+import { Question } from "./entity/Question";
+import { QuestionSession } from "./entity/QuestionSession";
 
 class DBManager {
 
     connection: Connection;
-
-    constructor() {
-       this.createConnection();
-    }
 
     async createConnection() {
         this.connection = await createConnection({
@@ -20,10 +18,14 @@ class DBManager {
             password: BotManager.config.db_pass,
             database: BotManager.config.db_name,
             entities: [
-                User
+                User,
+                Question,
+                QuestionSession
             ],
             synchronize: true,
         });
+
+        return this;
     }
 
     async getUser(userId) {

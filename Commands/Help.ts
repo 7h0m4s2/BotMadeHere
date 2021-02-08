@@ -12,7 +12,9 @@ class HelpCommand extends BotCommand {
 
         for (const command of BotManager.commands) {
             try {
-                content += command.getHelpMessage();
+                if(command.getHelpMessage()) {
+                    content += command.getHelpMessage();
+                }
             } catch(err) {
                 console.log(err);
             }
