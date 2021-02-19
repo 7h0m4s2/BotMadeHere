@@ -4,6 +4,7 @@ import BotCommand from './Commands/BotCommand';
 import { HelpCommand, NotifyYoutube, RulesCommand, QuestionCommand, ExportQuestions, QuestionPoll, QuestionPollStop } from './Commands/Commands';
 import DBManager from './DBManager';
 import { QuestionSession } from './entity/QuestionSession';
+import GarbageListerner from './Listeners/GarbageListeners';
 import GrizzlyListerner from './Listeners/GrizzlyListeners';
 import PollVoteListerner from './Listeners/PollVoteListerner';
 
@@ -65,7 +66,7 @@ class BotManager {
     initListeners() {
        new GrizzlyListerner();
        new PollVoteListerner();
-
+       new GarbageListerner();
     }
 
     initProfanity() {
