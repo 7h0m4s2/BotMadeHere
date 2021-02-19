@@ -10,9 +10,9 @@ import BotCommand from "./BotCommand";
 
 const ObjectsToCsv = require('objects-to-csv');
 
-class QuestionPoll extends BotCommand {
+class QuestionPollStop extends BotCommand {
 
-    command = 'createpoll';
+    command = 'stoppoll';
     args = undefined;
 
     async commandHandler(msg: Message) {
@@ -38,7 +38,7 @@ class QuestionPoll extends BotCommand {
             if(msg.deletable) {
                 msg.delete();
             }
-            msg.author.send("Missing arguments! USAGE: \n\n !createpoll {SessionID}");
+            msg.author.send("Missing arguments! USAGE: \n\n !stoppoll {SessionID}");
             return false;
         }
 
@@ -66,11 +66,11 @@ class QuestionPoll extends BotCommand {
         }
 
         const questions = await BotManager.database.connection
-            .getRepository(Question)
-            .createQueryBuilder("question")
-            .leftJoinAndSelect("question.user", "user")
+            .getRepository(QuestionPollMessage)
+            .createQueryBuilder("pollmessage")
+            .leftJoinAndSelect("pollmessage.question", "question")
             .leftJoinAndSelect("question.questionsession", "questionsession")
-            .where("question.questionsession = :id AND question.inpoll = :inpoll", { id: sessionID, inpoll: true })
+            .where("questionsession.id = :id", { id: sessionID})
             .getMany();
 
         if(!questions) {
@@ -81,51 +81,42 @@ class QuestionPoll extends BotCommand {
             if(msg.channel.type === 'text') {
                 const textChannel = (msg.channel as TextChannel);
 
-                textChannel.setTopic(`Holding poll for ${questions[0].questionsession.name}`)
+                textChannel.setTopic("Previous AMAs are pinned. Throw questions in here with the !question command. I'll use this as a basis for monthly AMAs");
 
                 const role = msg.guild.roles.cache.find(role => role.name === "medium");
 
                 textChannel.overwritePermissions([
                     {
                        id: role.id,
-                       deny: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'MANAGE_MESSAGES'],
+                       allow: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'MANAGE_MESSAGES'],
                     },
-                  ], 'Lockdown for poll')
+                  ], 'Reopen channel => poll is over')
             }
 
-            await BotManager.database.connection
-                .createQueryBuilder()
-                .update(QuestionSession)
-                .set({ pollactive: true })
-                .where("id = :id", { id: sessionID })
-                .execute();
 
             for (const question of questions) {
-                msg.channel.send(`${question.user.username} - ${question.content}`)
-                    .then(async sendMsg => {
-                        sendMsg.react("⬆️");
+                const channel = msg.guild.channels.cache.get(question.channelId);
+                const message = await (channel as TextChannel).messages.fetch(question.messageId);
+                const reaction = message.reactions.cache.get("⬆️");
 
-                        const dbMessage = await BotManager.database.connection
-                            .getRepository(QuestionPollMessage)
-                            .createQueryBuilder("pollMessage")
-                            .where("pollMessage.question = :id", { id: question.id})
-                            .getOne();
+                const votes = (await reaction.fetch()).count - 1; //Remove one from the bot itself;
 
-                        if(dbMessage) {
-                            dbMessage.messageId = sendMsg.id;
-                            dbMessage.channelId = sendMsg.channel.id;
-                            BotManager.database.connection.manager.save(dbMessage);
-                         } else {
-                            const pollMessage = new QuestionPollMessage();
-                            pollMessage.messageId = sendMsg.id;
-                            pollMessage.channelId = sendMsg.channel.id;
-                            pollMessage.question = question;
-                            BotManager.database.connection.manager.save(pollMessage);
-                         }
-                    });
+                await BotManager.database.connection
+                    .createQueryBuilder()
+                    .update(Question)
+                    .set({ votes: votes })
+                    .where("id = :id", { id: question.question.id })
+                    .execute();
+
+                await BotManager.database.connection
+                    .createQueryBuilder()
+                    .update(QuestionSession)
+                    .set({ pollactive: false })
+                    .where("id = :id", { id: question.question.questionsession.id })
+                    .execute();
             }
 
-            msg.author.send(`Created poll in ${msg.guild.name}`);
+            msg.author.send(`Stopped poll in ${msg.guild.name}`);
         }
     }
 
@@ -134,4 +125,4 @@ class QuestionPoll extends BotCommand {
     }
 }
 
-export default (QuestionPoll);
+export default (QuestionPollStop);

@@ -95,7 +95,7 @@ class QuestionCommand extends BotCommand {
 
 
     validateChannel(msg: Message) : boolean {
-        if(msg.channel.type === 'dm' && msg.author.id !== '258690128396943360') {
+        if(msg.channel.type === 'dm' && (msg.author.id == '258690128396943360' || msg.author.id == '486773876005797888')) {
             msg.reply('Questions can only be asked in the offical StuffMadeHere discord server');
             return false
         }

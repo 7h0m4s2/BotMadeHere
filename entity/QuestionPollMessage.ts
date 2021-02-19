@@ -10,6 +10,9 @@ export class QuestionPollMessage {
     @Column()
     messageId: string
 
+    @Column()
+    channelId: string
+
     @OneToOne(() => Question)
     @JoinColumn()
     question: Question;

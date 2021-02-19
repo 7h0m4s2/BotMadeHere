@@ -52,7 +52,7 @@ class AmaSession extends BotCommand {
     }
 
     validateUser(msg: Message) : boolean {
-        if(msg.channel.type === 'dm' && msg.author.id == '258690128396943360') {
+        if(msg.channel.type === 'dm' && (msg.author.id == '258690128396943360' || msg.author.id == '486773876005797888')) {
             return true
         }
 

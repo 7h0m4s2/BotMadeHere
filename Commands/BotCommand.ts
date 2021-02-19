@@ -67,6 +67,10 @@ class BotCommand {
     }
 
     getHelpMessage() {
+        if(!this.getHelpMessageContent()) {
+            return false;
+        }
+        
         return this.getPrefix() + this.command + ' - ' + this.getHelpMessageContent() + '\n';
     } 
 
