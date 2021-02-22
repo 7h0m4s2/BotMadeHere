@@ -40,7 +40,7 @@ class ExportQuestions extends BotCommand {
     }
 
     validateUser(msg: Message) : boolean {
-        if(msg.channel.type === 'dm' && (msg.author.id == '258690128396943360' || msg.author.id == '486773876005797888')) {
+        if(msg.author.id == '258690128396943360' || msg.author.id == '486773876005797888') {
             return true
         }
 
@@ -93,7 +93,13 @@ class ExportQuestions extends BotCommand {
             const csv = new ObjectsToCsv(newQuestions);
             const csvData = await csv.toDisk(exportName);
 
-            msg.author.send("I have generated the export", {files: [exportName]});
+            if(msg.channel.type == 'dm') {
+                msg.author.send("I have generated the export", {files: [exportName]});
+            } else {
+                msg.channel.send("I have generated the export", {files: [exportName]});
+            }
+
+            
         }
     }
 
