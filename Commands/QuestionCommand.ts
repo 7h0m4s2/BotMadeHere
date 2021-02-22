@@ -83,7 +83,7 @@ class QuestionCommand extends BotCommand {
 
     validateUserRole(msg: Message) : boolean {
 
-        if(msg.member.roles.cache.some(r => r.name === 'medium')) {
+        if(msg.member.roles.cache.some(r => r.name === 'Medium')) {
             return true;
         }
 
