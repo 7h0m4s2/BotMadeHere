@@ -94,12 +94,17 @@ class QuestionPollStop extends BotCommand {
 
                 const role = msg.guild.roles.cache.find(role => role.name === "medium");
 
-                textChannel.overwritePermissions([
-                    {
-                       id: role.id,
-                       allow: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'MANAGE_MESSAGES'],
-                    },
-                  ], 'Reopen channel => poll is over')
+                try {
+                    textChannel.overwritePermissions([
+                        {
+                           id: role.id,
+                           allow: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'MANAGE_MESSAGES'],
+                        },
+                      ], 'Reopen channel => poll is over')
+                } catch(err) {
+                    console.log(err);
+                }
+                
             }
 
 

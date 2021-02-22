@@ -95,12 +95,17 @@ class QuestionPoll extends BotCommand {
 
                 const role = msg.guild.roles.cache.find(role => role.name === "medium");
 
-                textChannel.overwritePermissions([
-                    {
-                       id: role.id,
-                       deny: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'MANAGE_MESSAGES'],
-                    },
-                  ], 'Lockdown for poll')
+                try {
+                    textChannel.overwritePermissions([
+                        {
+                           id: role.id,
+                           deny: ['SEND_MESSAGES', 'EMBED_LINKS', 'ATTACH_FILES', 'MANAGE_MESSAGES'],
+                        },
+                      ], 'Lockdown for poll')
+                } catch(err) {
+                    console.log(err);
+                }
+               
             }
 
             await BotManager.database.connection
