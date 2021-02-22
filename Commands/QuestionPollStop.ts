@@ -35,9 +35,14 @@ class QuestionPollStop extends BotCommand {
         if(!this.args.length) {
             msg.react('❌')
 
-            if(msg.deletable) {
-                msg.delete();
+            try {
+                if(msg.deletable) {
+                    msg.delete();
+                }
+            } catch (err) {
+                console.log(err);
             }
+
             msg.author.send("Missing arguments! USAGE: \n\n !stoppoll {SessionID}");
             return false;
         }
@@ -56,8 +61,12 @@ class QuestionPollStop extends BotCommand {
     async createDataset(msg: Message) {        
         const sessionID = this.args[0];
 
-        if(msg.deletable) {
-            msg.delete();
+        try {
+            if(msg.deletable) {
+                msg.delete();
+            }
+        } catch (err) {
+            console.log(err);
         }
 
         if(!sessionID) {

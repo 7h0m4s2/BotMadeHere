@@ -17,8 +17,12 @@ class QuestionCommand extends BotCommand {
             if(session) {
 
                 if(session.pollactive) {
-                    if(msg.deletable) {
-                        msg.delete();
+                    try {
+                        if(msg.deletable) {
+                            msg.delete();
+                        }
+                    } catch (err) {
+                        console.log(err);
                     }
                     msg.author.send(`Your question \`${this.args.join(" ")}\` has been deleted from the channel because a poll is currently active. You can submit the question in the next session`);
                     return;
@@ -69,8 +73,12 @@ class QuestionCommand extends BotCommand {
 
         if(found.length) {
             if(msg.deletable) {
-                msg.delete();
-                msg.author.send("Your question has been deleted because it violated the server rules");
+                try {
+                    msg.delete();
+                    msg.author.send("Your question has been deleted because it violated the server rules");
+                } catch (err) {
+                    console.log(err);
+                }
             } else {
                 msg.react('❌')
             }
