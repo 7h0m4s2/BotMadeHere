@@ -31,6 +31,7 @@ class BotManager {
 
         client.on('ready', () => {
           console.log(`Logged in as ${client.user.tag}!`);
+          client.user.setActivity(" !help ", {type: 2});
         });
 
         this.initCommands();
