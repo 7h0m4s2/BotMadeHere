@@ -7,6 +7,8 @@ import { QuestionSession } from './entity/QuestionSession';
 import GarbageListerner from './Listeners/GarbageListeners';
 import GrizzlyListerner from './Listeners/GrizzlyListeners';
 import PollVoteListerner from './Listeners/PollVoteListerner';
+import RuleSixListerner from './Listeners/RuleSixListerner';
+
 
 const config = require('./config.json');
 var fs = require("fs");
@@ -69,6 +71,7 @@ class BotManager {
        new GrizzlyListerner();
        new PollVoteListerner();
        new GarbageListerner();
+       new RuleSixListerner();
     }
 
     initProfanity() {
