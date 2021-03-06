@@ -50,10 +50,10 @@ class QuestionCommand extends BotCommand {
     validateCommand(msg: Message) : boolean {
         if (msg.author.bot) return false;
 
-        this.args = msg.content.slice(this.getPrefix().length).trim().split(/ +/);
+        this.args = msg.content.trim().split(/ +/);
         const command = this.args.shift().toLowerCase();
 
-        return command === this.command;
+        return command === this.getPrefix() + this.command;
     }
 
     validateArgs(msg: Message) : boolean {
