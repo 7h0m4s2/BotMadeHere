@@ -3,11 +3,13 @@
 ## Current Features
 
 - Send private notification to all subscribed users when a youtube video drops
-- Send private notification to all subscribed users when a patreon is posted
-- Subscribe to above lists
+- Subscribe to above list
 - A help window for above commands
 - Cooldown to prevent Bot spam
 - Grizzly
+- Garbage
+- rule 6
+- AMA question system
 
 ## A config file also needs to be included
 
