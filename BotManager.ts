@@ -33,7 +33,10 @@ class BotManager {
 
         client.on('ready', () => {
           console.log(`Logged in as ${client.user.tag}!`);
-          client.user.setActivity(" internet pool ", {type: 1});
+          client.user.setActivity('with sawdust 🪓', {
+            type: 'PLAYING'
+          });
+        
         });
 
         this.initCommands();
