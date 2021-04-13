@@ -33,7 +33,7 @@ export class User {
 
     constructor(id: string, username: string, bot: boolean) {
         this.userId = id;
-        this.username = username;
+        this.username = username.replace(/[\u0800-\uFFFF]/g, '');
         this.bot = bot;
         this.enablePatreon = false;
         this.enableYoutube = false;
